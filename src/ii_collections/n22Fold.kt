@@ -13,9 +13,29 @@ fun whatFoldDoes(): Int {
 }
 
 fun Shop.getSetOfProductsOrderedByEachCustomer(): Set<Product> {
-    // Return the set of products that were ordered by each of the customers
-    return customers.fold(allOrderedProducts, {
-        orderedByAll, customer ->
-        todoCollectionTask()
-    })
+  val allOrderedProducts = customers.flatMap(Customer::orders)
+                                    .flatMap(Order::products)
+                                    .toSet()
+
+  return customers.fold(allOrderedProducts, {
+      orderedByAll, customer ->
+        orderedByAll.intersect(customer.orders.flatMap(Order::products).toSet())
+  })
+}
+
+fun <T> List<T>.fold1(f: (T, T) -> T): T? {
+  val initial = first() ?: return null
+  return drop(1).fold(initial, f)
+}
+
+fun <T> intersection(s: Set<T>, t: Set<T>): Set<T> = s.intersect(t)
+
+val Customer.products: List<Product> get() {
+  return orders.flatMap(Order::products)
+}
+
+fun Shop.getSetOfProductsOrderedByEachCustomer2(): Set<Product> {
+  return customers.map(Customer::products)
+                  .map(Collection<Product>::toSet)
+                  .fold1(::intersection) ?: setOf()
 }

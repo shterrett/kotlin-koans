@@ -19,4 +19,18 @@ class N22FoldKtTest {
         )
         assertEquals(setOf(idea), testShop.getSetOfProductsOrderedByEachCustomer())
     }
+
+    @Test fun testGetProductsOrderedByAllCustomers2() {
+        val testShop = shop("test shop for 'fold'",
+                customer(lucas, Canberra,
+                        order(idea),
+                        order(webStorm)
+                ),
+                customer(reka, Budapest,
+                        order(idea),
+                        order(youTrack)
+                )
+        )
+        assertEquals(setOf(idea), testShop.getSetOfProductsOrderedByEachCustomer2())
+    }
 }
