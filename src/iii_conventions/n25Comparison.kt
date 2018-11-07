@@ -15,8 +15,16 @@ fun todoTask25(): Nothing = TODO(
     references = { date: MyDate, comparable: Comparable<MyDate> -> }
 )
 
+operator fun MyDate.compareTo(other: MyDate): Int {
+  return compareValuesBy(this,
+    other,
+    MyDate::year,
+    MyDate::month,
+    MyDate::dayOfMonth
+  )
+}
+
 fun task25(date1: MyDate, date2: MyDate): Boolean {
-    todoTask25()
-//    return date1 < date2
+    return date1 < date2
 }
 
